@@ -1,0 +1,8 @@
+streamlit>=1.50
+numpy
+pandas
+scikit-learn
+scipy
+plotly
+pyarrow
+torch
