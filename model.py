@@ -559,7 +559,11 @@ def evaluate_all(df, features, n_splits=3, split_strategy="representative"):
         
         q90[name] = float(np.quantile(np.abs(ycv - cvp), 0.90)) if not np.isnan(cvp[0]) else float(np.quantile(np.abs(te[TARGET] - p), 0.90))
         mt = _metrics(te[TARGET], p)
+        p_mean = float(np.mean(p))
+        p_std = float(np.std(p))
+        bias = float(p_mean - np.mean(te[TARGET]))
         rows.append({"Model": name, "R²": mt["R²"], "RMSE (kW)": mt["RMSE"], "MAE (kW)": mt["MAE"],
+                     "Pred Mean (kW)": p_mean, "Pred Std (kW)": p_std, "Bias (kW)": bias,
                      "MAPE %": mt["MAPE %"], "WMAPE %": mt["WMAPE %"], "CV RMSE (kW)": mc["RMSE"], "CV R²": mc["R²"], "Fit (s)": fit_s})
         hold[name], holdm[name], oof[name] = p, m, cvp
         # Fast fit final: if large dataset, use Xcv for heavy NNs
@@ -572,7 +576,10 @@ def evaluate_all(df, features, n_splits=3, split_strategy="representative"):
     lb = lb.sort_values("RMSE (kW)").reset_index(drop=True)
     best = lb[lb.Model != "Constant-PUE baseline"].iloc[0]["Model"]
     return {"leaderboard": lb, "holdout_pred": hold, "holdout_models": holdm, "oof": oof, "q90": q90,
-            "final": final, "test": te, "best": best, "features": list(features)}
+            "final": final, "test": te, "best": best, "features": list(features),
+            "target_test_mean": float(np.mean(te[TARGET])), "target_test_std": float(np.std(te[TARGET])),
+            "target_test_min": float(np.min(te[TARGET])), "target_test_max": float(np.max(te[TARGET])),
+            "test_rows": len(te)}
 
 
 # ---------------------------------------------------------------- prediction + sensitivity

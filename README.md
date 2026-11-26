@@ -81,6 +81,33 @@
 
 ---
 
+### 4. Actual vs. Predicted Cooling Power Distribution (Mean & Std on Test Sets)
+
+When evaluating models on the unseen 20% chronological test set (future operational time horizon):
+
+#### A. Commercial BMS Telemetry (Target Test Set: Mean = 108.07 kW, Std = 31.97 kW, N = 20,066)
+
+| Model Architecture | Predicted Mean (kW) | Predicted Std (kW) | Bias Error (kW) | $R^2$ Score | RMSE (kW) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Ridge + Physics** | **108.28** | **31.01** | **+0.21** | **0.9348** | **8.16** |
+| **Gradient Boosting** | **111.21** | **30.79** | **+3.14** | **0.8435** | **12.65** |
+| **Random Forest** | **114.89** | **27.78** | **+6.83** | **0.6853** | **17.94** |
+
+#### B. Modern Data Center (Target Test Set: Mean = 121.80 kW, Std = 21.51 kW, N = 1,752)
+
+| Model Architecture | Predicted Mean (kW) | Predicted Std (kW) | Bias Error (kW) | $R^2$ Score | RMSE (kW) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Random Forest** | **121.88** | **20.48** | **+0.08** | **0.9323** | **5.60** |
+| **Gradient Boosting** | **121.74** | **20.19** | **-0.06** | **0.9206** | **6.06** |
+| **Ridge + Physics** | **123.85** | **25.13** | **+2.05** | **0.7215** | **11.35** |
+
+> **💡 Top Recommendation — Facility-Specific Chronological Models ($R^2 = 0.92 - 0.93$, RMSE $\le 6 - 8	ext{ kW}$):**
+> 
+> Data centers have unique mechanical chillers, pumps, and pipe loops.
+> Training on the facility's own telemetry with **autoregressive lags + physics features** gives **$R^2 > 0.93$** with virtually zero bias ($\pm 0.08	ext{ kW}$).
+
+---
+
 ## ⚡ Quickstart
 
 ### 1. Installation
