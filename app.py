@@ -9,7 +9,7 @@ from sklearn.inspection import permutation_importance
 import data as D
 import model as M
 
-st.set_page_config(page_title="Cooling Intelligence", page_icon="❄️", layout="wide")
+st.set_page_config(page_title="ThermoDC · Cooling Intelligence", page_icon="❄️", layout="wide")
 
 ACCENT, PALETTE = "#1f77b4", px.colors.qualitative.Plotly
 
@@ -175,7 +175,7 @@ with st.sidebar:
         meta = {"rows_power": len(df)}
 
 if df is None:
-    st.title("❄️ Data Center Cooling Energy")
+    st.title("❄️ ThermoDC: Data Center Cooling Energy Intelligence")
     if src.startswith("🏛️"):
         st.info("**Step 1 — get the real data.** Click **Download real dataset** in the sidebar (or run "
                 "`python fetch_data.py`). It pulls the public NREL/NLR ESIF data-center dataset "
@@ -199,7 +199,8 @@ step_h = rep.get("step_hours", 1.0)
 bounds = {k: (float(df[k].quantile(.005)), float(df[k].quantile(.995))) for k in features}
 
 # =============================================================== hero + economics
-st.title("❄️ Data Center Cooling Energy — Prediction, Sensitivity & Scenarios")
+st.title("❄️ ThermoDC: Data Center Cooling Energy Intelligence")
+st.markdown("**Physics-Informed Machine Learning for Power Prediction & PUE Optimization**")
 st.caption(("🟢 REAL DATA · " if is_real else "🟠 SYNTHETIC DEMO · ") + f"{source_name} · {len(df):,} cleaned time steps "
            f"({rep['start']:%b %Y} → {rep['end']:%b %Y})")
 
